@@ -125,3 +125,36 @@ for (int i = 0; i < matrix.GetLength(0); i++)
 	Console.WriteLine();
 }
 
+//5
+int[,] matrix = { { 1, 2, 3, 4,5,6 },
+                  { 1, 2, 3, 4,5,6 },
+                  { 1, 2, 3, 4,5,6 },
+                  { 1, 1, 3, 4,5,6 }};
+int previ = 0;
+int prevj = 0;
+for (int i = 0; i < matrix.GetLength(0); i++)
+{
+    for (int j = 0; j < matrix.GetLength(1); j++)
+    {
+        if (i%2==0 && j%2==0)
+        {
+            matrix[i, j] = matrix[i, j] - matrix[i, j]*2;
+        } else if(i%2!=0 && j%2!=0 && (i < matrix.GetLength(1) && j < matrix.GetLength(0)) && matrix[j,i] % 2!=0 && i!=prevj && j!=previ)
+        {
+            int temp = matrix[i, j];
+            matrix[i, j] = matrix[j, i];
+            matrix[j, i] = temp;
+            previ = i;
+            prevj = j;
+        }
+    }
+}
+
+for (int i = 0; i < matrix.GetLength(0); i++)
+{
+    for (int j = 0; j < matrix.GetLength(1); j++)
+    {
+        Console.Write($"{matrix[i,j]} ");
+    }
+    Console.WriteLine();
+}
