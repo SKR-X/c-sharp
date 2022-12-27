@@ -158,3 +158,118 @@ for (int i = 0; i < matrix.GetLength(0); i++)
     }
     Console.WriteLine();
 }
+
+
+//6
+using System;
+
+namespace ConsoleApp10
+{
+    class Program
+    {
+
+        static int maxPlace(int[,] matrix, int maxi, int maxj)
+        {
+            int c = 0;
+            for (int i = 0; i < matrix.GetLength(0) / 2; i++)
+            {
+                for (int j = 1; j < matrix.GetLength(1); j++)
+                {
+                    c++;
+                    if (i == maxi && j == maxj)
+                    {
+                        return c;
+                    }
+                }
+            }
+            return 0;
+        }
+        static void Main(string[] args)
+        {
+            int[,] matrix = { {5,3,10,2,1},
+                  {1,2,3,4,5},
+                  {1,2,3,4,5},
+                  {1,2,3,4,5} };
+            int max = 0, maxi = 0, maxj = 0;
+            int c = 0;
+            for (int i = 0; i < matrix.GetLength(0) / 2; i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] > max)
+                    {
+                        max = matrix[i, j];
+                        maxi = i;
+                        maxj = j;
+                    }
+                }
+            }
+
+            int maxPlaceC = maxPlace(matrix,maxi,maxj);
+
+            int[] firstMas = new int[(matrix.GetLength(0)/2)*matrix.GetLength(1)];
+            c = 0;
+            for (int i = 0; i < matrix.GetLength(0) / 2; i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    firstMas[c] = matrix[i,j];
+                    c++;
+                }
+            }
+
+            var step = firstMas.Length / 2;
+
+            while (step > 0)
+            {
+                for (int i = step; i < firstMas.Length; i++)
+                {
+                    int j = i;
+                    while ((j >= step) && firstMas[j - step] > firstMas[j])
+                    {
+                        var temp = firstMas[j - step];
+                        firstMas[j - step] = firstMas[j];
+                        firstMas[j] = temp;
+                        j -= step;
+                    }
+                }
+                step /= 2;
+            }
+            c = 0;
+            int[] inpMas = new int[firstMas.Length];
+            for (int i = 0; i < maxPlaceC; i++)
+            {
+                inpMas[i] = firstMas[c];
+                c++;
+            }
+            for (int i = maxPlaceC+1; i < inpMas.Length; i++)
+            {
+                inpMas[i] = firstMas[c];
+                c++;
+            }
+            inpMas[maxPlaceC] = max;
+            c = 0;
+            for (int i = 0; i < matrix.GetLength(0)/2; i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    matrix[i, j] = inpMas[c];
+                    c++;
+                }
+            }
+
+            for (int i = 0; i < matrix.GetLength(0) / 2; i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i,j]} ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+
+
+        }
+    }
+}
